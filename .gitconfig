@@ -1,0 +1,4 @@
+[core]
+    editor = code --wait
+[include]
+    path = ~/.gitconfig.local
