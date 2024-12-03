@@ -6,7 +6,7 @@ config = {
     automatically_reload_config = true,
     enable_tab_bar = false,
     window_close_confirmation = "NeverPrompt",
-    window_decoration = "RESIZE", -- disable the title bar but enable the resizable border
+    window_decorations = "RESIZE", -- disable the title bar but enable the resizable border
     default_cursor_style = "BlinkingBar",
     color_scheme = "Nord (Gogh)",
 }
