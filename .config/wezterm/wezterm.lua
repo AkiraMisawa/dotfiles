@@ -7,6 +7,7 @@ config = {
     enable_tab_bar = false,
     window_close_confirmation = "NeverPrompt",
     window_decoration = "RESIZE", -- disable the title bar but enable the resizable border
+    default_cursor_style = "BlinkingBar",
 }
 
 return config
