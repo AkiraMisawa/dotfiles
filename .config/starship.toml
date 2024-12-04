@@ -9,13 +9,18 @@ $git_status\
 [](fg:#394260 bg:#212736)\
 $nodejs\
 $rust\
-$golang\
-$php\
 [](fg:#212736 bg:#1d2230)\
-$time\
-[ ](fg:#1d2230)\
+$dotnet\
+[](fg:#212736 bg:#1d2230)\
+\n$character\
+"""
+
+right_format = """
 $memory_usage\
-\n$character"""
+$cmd_duration\
+$username\
+$time
+"""
 
 command_timeout = 2000
 
@@ -87,7 +92,13 @@ format = '[[  $time ](fg:#a0a9cb bg:#1d2230)]($style)'
 [memory_usage]
 disabled = false
 threshold = -1
+format = '[${ram} ${ram_pct}]($style) '
 style = "bold dimmed blue"
+
+[cmd_duration]
+show_milliseconds = true
+min_time = 5
+format = ' [󱫌 $duration]($style)'
 
 [docker_context]
 format = "via [🐋 $context](blue bold)"
