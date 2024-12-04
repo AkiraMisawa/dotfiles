@@ -15,6 +15,7 @@ config = {
         colors = { "#000000" },
     },
     window_background_opacity = 0.85,
+    show_new_tab_button_in_tab_bar = false,
     default_cursor_style = "BlinkingBar",
     color_scheme = "Tokyo Night (Gogh)",
     font = wezterm.font("JetBrains Mono", { weight = "Bold" }),
