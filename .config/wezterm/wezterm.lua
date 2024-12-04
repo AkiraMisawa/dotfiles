@@ -63,4 +63,7 @@ wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_wid
     }
 end)
 
+config.keys = require("keybinds").keys
+config.key_tables = require("keybinds").key_tables
+
 return config
