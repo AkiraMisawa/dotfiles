@@ -21,6 +21,11 @@ config = {
     font = wezterm.font("JetBrains Mono", { weight = "Bold" }),
     font_size = 12.5,
     use_ime = true,
+    colors = {
+        tab_bar = {
+            inactive_tab_edge = "none",
+        },
+    }
 }
 
 local mux = wezterm.mux
