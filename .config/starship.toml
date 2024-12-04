@@ -14,9 +14,14 @@ $php\
 [](fg:#212736 bg:#1d2230)\
 $time\
 [ ](fg:#1d2230)\
+$memory_usage\
 \n$character"""
 
 command_timeout = 2000
+
+[character]
+error_symbol = "[➜](bold red)"
+success_symbol = "[➜](bold blue)"
 
 [directory]
 style = "fg:#e3e5e5 bg:#769ff0"
@@ -82,4 +87,7 @@ format = '[[  $time ](fg:#a0a9cb bg:#1d2230)]($style)'
 [memory_usage]
 disabled = false
 threshold = -1
-style = "bold dimmed green"
+style = "bold dimmed blue"
+
+[docker_context]
+format = "via [🐋 $context](blue bold)"
