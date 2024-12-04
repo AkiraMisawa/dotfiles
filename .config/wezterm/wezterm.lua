@@ -11,6 +11,7 @@ config = {
     color_scheme = "Tokyo Night (Gogh)",
     font = wezterm.font("JetBrains Mono", { weight = "Bold" }),
     font_size = 12.5,
+    use_ime = true,
     background = {
         {
             source = {
