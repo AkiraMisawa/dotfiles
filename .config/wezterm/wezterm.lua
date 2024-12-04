@@ -3,6 +3,7 @@ local wezterm = require "wezterm"
 local config = wezterm.config_builder()
 
 config = {
+    leader = { key = "q", mods = "CTRL", timeout_milliseconds = 2000 },
     automatically_reload_config = true,
     window_close_confirmation = "NeverPrompt",
     window_decorations = "RESIZE", -- disable the title bar but enable the resizable border
