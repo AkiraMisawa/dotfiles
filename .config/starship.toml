@@ -20,7 +20,7 @@ $memory_usage\
 command_timeout = 2000
 
 [character]
-error_symbol = "[➜](bold red)"
+error_symbol = "[✘](bold red)"
 success_symbol = "[➜](bold blue)"
 
 [directory]
