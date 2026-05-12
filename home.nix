@@ -13,6 +13,12 @@
     VISUAL = "micro";
   };
 
+  xdg.configFile."micro/colorschemes/tokyonight.micro".source =
+    ./files/micro-tokyonight.micro;
+  xdg.configFile."micro/settings.json".text = builtins.toJSON {
+    colorscheme = "tokyonight";
+  };
+
   programs.home-manager.enable = true;
 
   home.packages = with pkgs; [
