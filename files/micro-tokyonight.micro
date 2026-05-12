@@ -1,52 +1,54 @@
 # Tokyo Night (Gogh) colorscheme for micro
-# Palette: https://github.com/Gogh-Co/Gogh/blob/master/themes/tokyo-night.sh
+# Background inherits from the terminal (use `default` as the bg color),
+# so wezterm's background colour / image shows through. Foreground
+# palette mirrors the Gogh tokyo-night terminal theme.
 
-color-link default                  "#a9b1d6,#1a1b26"
+color-link default                  "#a9b1d6,default"
 
-color-link comment                  "italic #565f89"
-color-link identifier               "#7aa2f7"
-color-link identifier.class         "#bb9af7"
-color-link identifier.var           "#a9b1d6"
+color-link comment                  "italic #565f89,default"
+color-link identifier               "#7aa2f7,default"
+color-link identifier.class         "#bb9af7,default"
+color-link identifier.var           "#a9b1d6,default"
 
-color-link constant                 "#ff9e64"
-color-link constant.bool            "#ff9e64"
-color-link constant.number          "#ff9e64"
-color-link constant.string          "#9ece6a"
-color-link constant.string.url      "underline #9ece6a"
-color-link constant.specialChar     "#bb9af7"
+color-link constant                 "#ff9e64,default"
+color-link constant.bool            "#ff9e64,default"
+color-link constant.number          "#ff9e64,default"
+color-link constant.string          "#9ece6a,default"
+color-link constant.string.url      "underline #9ece6a,default"
+color-link constant.specialChar     "#bb9af7,default"
 
-color-link statement                "#bb9af7"
-color-link preproc                  "#7dcfff"
-color-link type                     "#0db9d7"
-color-link type.keyword             "#bb9af7"
-color-link special                  "#f7768e"
-color-link symbol                   "#89ddff"
-color-link symbol.brackets          "#a9b1d6"
-color-link symbol.tag               "#f7768e"
-color-link escape                   "#bb9af7"
-color-link underlined               "underline #7aa2f7"
+color-link statement                "#bb9af7,default"
+color-link preproc                  "#7dcfff,default"
+color-link type                     "#0db9d7,default"
+color-link type.keyword             "#bb9af7,default"
+color-link special                  "#f7768e,default"
+color-link symbol                   "#89ddff,default"
+color-link symbol.brackets          "#a9b1d6,default"
+color-link symbol.tag               "#f7768e,default"
+color-link escape                   "#bb9af7,default"
+color-link underlined               "underline #7aa2f7,default"
 
-color-link error                    "#f7768e,#1a1b26"
-color-link todo                     "bold #e0af68"
+color-link error                    "#f7768e,default"
+color-link todo                     "bold #e0af68,default"
 
-color-link indent-char              "#3b4261"
-color-link line-number              "#3b4261,#16161e"
-color-link current-line-number      "#a9b1d6,#16161e"
+color-link indent-char              "#3b4261,default"
+color-link line-number              "#3b4261,default"
+color-link current-line-number      "bold #a9b1d6,default"
 
-color-link gutter-error             "#f7768e,#1a1b26"
-color-link gutter-warning           "#e0af68,#1a1b26"
+color-link gutter-error             "#f7768e,default"
+color-link gutter-warning           "#e0af68,default"
 
-color-link statusline               "#a9b1d6,#16161e"
-color-link tabbar                   "#a9b1d6,#16161e"
-color-link divider                  "#3b4261,#1a1b26"
+color-link statusline               "#a9b1d6,default"
+color-link tabbar                   "#a9b1d6,default"
+color-link divider                  "#3b4261,default"
 
+# Highlighted regions still need an opaque background to be visible.
 color-link cursor-line              ",#1f2335"
 color-link color-column             ",#1f2335"
-
-color-link diff-added               "#9ece6a"
-color-link diff-modified            "#e0af68"
-color-link diff-deleted             "#f7768e"
-
 color-link match-brace              "#7aa2f7,#3b4261"
 color-link selection                ",#33467c"
 color-link hlsearch                 "#1a1b26,#e0af68"
+
+color-link diff-added               "#9ece6a,default"
+color-link diff-modified            "#e0af68,default"
+color-link diff-deleted             "#f7768e,default"
