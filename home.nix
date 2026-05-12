@@ -41,6 +41,8 @@
   programs.git = {
     enable = true;
     settings = {
+      user.name = "akira";
+      user.email = "4346607+AkiraMisawa@users.noreply.github.com";
       init.defaultBranch = "main";
       core.autocrlf = "input";
       pull.rebase = false;
