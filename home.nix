@@ -11,6 +11,7 @@
   home.sessionVariables = {
     EDITOR = "micro";
     VISUAL = "micro";
+    PAGER = "moor";
   };
 
   xdg.configFile."micro/colorschemes/tokyonight.micro".source =
@@ -29,6 +30,7 @@
     bat
     just
     micro
+    moar
     rsync
     yq-go
     zellij
