@@ -94,7 +94,7 @@
       copy-across-tabs = ./files/yazi-plugins/copy-across-tabs;
     };
     keymap = {
-      mgr.prepend_keymap = [
+      mgr.append_keymap = [
         {
           on = [ "c" "C" ];
           run = "plugin copy-across-tabs";

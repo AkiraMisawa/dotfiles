@@ -25,18 +25,22 @@ return {
     local mode = (job and job.args and job.args[1]) or "path"
 
     local items = {}
-    for _, tab in ipairs(cx.tabs) do
-      for _, url in pairs(tab.selected) do
-        table.insert(items, transform(url, mode))
+    local tab_count = #cx.tabs
+    for i = 1, tab_count do
+      local tab = cx.tabs[i]
+      if tab and tab.selected then
+        for _, url in pairs(tab.selected) do
+          table.insert(items, transform(url, mode))
+        end
       end
     end
 
     if #items == 0 then
       ya.notify {
         title   = "copy-across-tabs",
-        content = "Nothing selected in any tab",
+        content = ("Nothing selected across %d tab(s)"):format(tab_count),
         level   = "warn",
-        timeout = 2,
+        timeout = 3,
       }
       return
     end
@@ -44,7 +48,7 @@ return {
     ya.clipboard(table.concat(items, "\n"))
     ya.notify {
       title   = "copy-across-tabs",
-      content = ("Copied %d %s(s)"):format(#items, mode),
+      content = ("Copied %d %s(s) from %d tab(s)"):format(#items, mode, tab_count),
       timeout = 2,
     }
   end,
