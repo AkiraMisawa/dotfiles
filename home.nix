@@ -96,7 +96,7 @@
     keymap = {
       mgr.prepend_keymap = [
         {
-          on = [ "<C-y>" ];
+          on = [ "c" "a" ];
           run = "plugin copy-paths-across-tabs";
           desc = "Copy paths across all tabs";
         }
