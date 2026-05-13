@@ -33,7 +33,7 @@ color-link todo                     "bold #e0af68,default"
 
 color-link indent-char              "#3b4261,default"
 color-link line-number              "#3b4261,default"
-color-link current-line-number      "bold #a9b1d6,default"
+color-link current-line-number      "bold #c0caf5,default"
 
 color-link gutter-error             "#f7768e,default"
 color-link gutter-warning           "#e0af68,default"
@@ -43,8 +43,10 @@ color-link tabbar                   "#a9b1d6,default"
 color-link divider                  "#3b4261,default"
 
 # Highlighted regions still need an opaque background to be visible.
-color-link cursor-line              ",#1f2335"
-color-link color-column             ",#1f2335"
+# Cursor-line uses the same darker shade as line-number gutter so dim
+# foregrounds (comment #565f89, markup.quote #4e5579, ...) stay readable.
+color-link cursor-line              ",#16161e"
+color-link color-column             ",#16161e"
 color-link match-brace              "#7aa2f7,#3b4261"
 color-link selection                ",#33467c"
 color-link hlsearch                 "#1a1b26,#e0af68"
