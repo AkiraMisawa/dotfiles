@@ -42,9 +42,11 @@ color-link statusline               "#a9b1d6,default"
 color-link tabbar                   "#a9b1d6,default"
 color-link divider                  "#3b4261,default"
 
-# cursor-line is intentionally not styled - settings.json sets
-# `cursorline = false`, so the current line is indicated solely by the
-# bold/brighter current-line-number in the gutter.
+# Keep cursorline enabled (so current-line-number's bold style still
+# applies), but make the body highlight a no-op by giving cursor-line
+# the terminal default background. The current line ends up indicated
+# only by the brighter line number in the gutter.
+color-link cursor-line              ",default"
 color-link color-column             ",#16161e"
 color-link match-brace              "#7aa2f7,#3b4261"
 color-link selection                ",#33467c"

@@ -20,7 +20,6 @@
     ./files/micro-markdown.yaml;
   xdg.configFile."micro/settings.json".text = builtins.toJSON {
     colorscheme = "tokyonight";
-    cursorline = false;
   };
 
   programs.home-manager.enable = true;
