@@ -91,14 +91,29 @@
     enableZshIntegration = true;
     shellWrapperName = "y";
     plugins = {
-      copy-paths-across-tabs = ./files/yazi-plugins/copy-paths-across-tabs;
+      copy-across-tabs = ./files/yazi-plugins/copy-across-tabs;
     };
     keymap = {
       mgr.prepend_keymap = [
         {
-          on = [ "c" "a" ];
-          run = "plugin copy-paths-across-tabs";
+          on = [ "c" "C" ];
+          run = "plugin copy-across-tabs";
           desc = "Copy paths across all tabs";
+        }
+        {
+          on = [ "c" "D" ];
+          run = "plugin copy-across-tabs -- dirname";
+          desc = "Copy dirnames across all tabs";
+        }
+        {
+          on = [ "c" "F" ];
+          run = "plugin copy-across-tabs -- filename";
+          desc = "Copy filenames across all tabs";
+        }
+        {
+          on = [ "c" "N" ];
+          run = "plugin copy-across-tabs -- noext";
+          desc = "Copy filenames (no ext) across all tabs";
         }
       ];
     };
