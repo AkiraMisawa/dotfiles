@@ -9,8 +9,8 @@
   ];
 
   home.sessionVariables = {
-    EDITOR = "micro";
-    VISUAL = "micro";
+    EDITOR = "hx";
+    VISUAL = "hx";
     PAGER = "moor";
   };
 
@@ -68,7 +68,22 @@
 
   programs.gh.enable = true;
   programs.lazygit.enable = true;
-  programs.helix.enable = true;
+  programs.helix = {
+    enable = true;
+    settings = {
+      theme = "tokyonight";
+      editor = {
+        line-number = "relative";
+        cursorline = true;
+        mouse = true;
+        bufferline = "multiple";
+        color-modes = true;
+        indent-guides.render = true;
+        lsp.display-messages = true;
+        soft-wrap.enable = true;
+      };
+    };
+  };
 
   programs.direnv = {
     enable = true;
