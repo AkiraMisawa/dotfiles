@@ -20,6 +20,13 @@ local function transform(url, mode)
   return s
 end
 
+-- POSIX shell quoting so the clipboard payload can be pasted after a
+-- command (`delta <paste>`, `cat <paste>`, ...) even when paths
+-- contain spaces or quotes.
+local function shell_quote(s)
+  return "'" .. s:gsub("'", "'\\''") .. "'"
+end
+
 -- UI state (cx.tabs, tab.selected) can only be touched inside a sync
 -- block, so collect everything we need here and return plain Lua
 -- values to the async entry below.
@@ -52,7 +59,11 @@ return {
       return
     end
 
-    ya.clipboard(table.concat(items, "\n"))
+    local quoted = {}
+    for i, item in ipairs(items) do
+      quoted[i] = shell_quote(item)
+    end
+    ya.clipboard(table.concat(quoted, " "))
     ya.notify {
       title   = "copy-across-tabs",
       content = ("Copied %d %s(s) from %d tab(s)"):format(#items, mode, tab_count),
