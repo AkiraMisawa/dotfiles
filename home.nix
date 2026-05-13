@@ -183,13 +183,14 @@
 
       setopt HIST_VERIFY
 
-      # Home / End keys (cover application, CSI, and legacy sequences)
+      # Home / End / Delete (cover application, CSI, and legacy sequences)
       bindkey "^[OH"  beginning-of-line
       bindkey "^[OF"  end-of-line
       bindkey "^[[H"  beginning-of-line
       bindkey "^[[F"  end-of-line
       bindkey "^[[1~" beginning-of-line
       bindkey "^[[4~" end-of-line
+      bindkey "^[[3~" delete-char
 
       # Ctrl-P / Ctrl-N also do substring history search
       bindkey "^P" history-substring-search-up
