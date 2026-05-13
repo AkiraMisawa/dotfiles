@@ -90,6 +90,18 @@
     enable = true;
     enableZshIntegration = true;
     shellWrapperName = "y";
+    plugins = {
+      copy-paths-across-tabs = ./files/yazi-plugins/copy-paths-across-tabs;
+    };
+    keymap = {
+      mgr.prepend_keymap = [
+        {
+          on = [ "<C-y>" ];
+          run = "plugin copy-paths-across-tabs";
+          desc = "Copy paths across all tabs";
+        }
+      ];
+    };
   };
 
   programs.eza = {
