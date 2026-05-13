@@ -54,6 +54,14 @@ color-link diff-modified            "#e0af68,default"
 color-link diff-deleted             "#f7768e,default"
 
 # Markdown-specific tokens (used by files/micro-markdown.yaml).
-# Matches bat's tokyonight_night palette for headings / code.
+# Matches bat's tokyonight_night palette.
 color-link markup.heading           "#73daca,default"
 color-link markup.code              "#89ddff,default"
+color-link markup.bold              "bold #c0caf5,default"
+color-link markup.italic            "italic #c0caf5,default"
+color-link markup.strike            "#565f89,default"
+color-link markup.quote             "#4e5579,default"
+color-link markup.list              "#9abdf5,default"
+color-link markup.link              "#73daca,default"
+color-link markup.url               "underline #73daca,default"
+color-link markup.table             "#9aa5ce,default"

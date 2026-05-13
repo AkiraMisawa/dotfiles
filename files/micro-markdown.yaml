@@ -5,19 +5,19 @@ detect:
 
 rules:
     # Tables (Github extension)
-    - type: ".*[ :]\\|[ :].*"
+    - markup.table: ".*[ :]\\|[ :].*"
 
       # quotes
-    - statement:  "^>.*"
+    - markup.quote:  "^>.*"
 
-      # Emphasis
-    - type: "(^|[[:space:]])(_[^ ][^_]*_|\\*[^ ][^*]*\\*)"
+      # Emphasis (italic)
+    - markup.italic: "(^|[[:space:]])(_[^ ][^_]*_|\\*[^ ][^*]*\\*)"
 
-      # Strong emphasis
-    - type: "(^|[[:space:]])(__[^ ][^_]*__|\\*\\*[^ ][^*]*\\*\\*)"
+      # Strong emphasis (bold)
+    - markup.bold: "(^|[[:space:]])(__[^ ][^_]*__|\\*\\*[^ ][^*]*\\*\\*)"
 
       # strike-through
-    - type: "(^|[[:space:]])~~[^ ][^~]*~~"
+    - markup.strike: "(^|[[:space:]])~~[^ ][^~]*~~"
 
       # horizontal rules
     - markup.heading: "^(---+|===+|___+|\\*\\*\\*+)\\s*$"
@@ -26,20 +26,20 @@ rules:
     - markup.heading:  "^#{1,6}.*"
 
       # lists
-    - identifier:   "^[[:space:]]*[\\*+-] |^[[:space:]]*[0-9]+\\. "
+    - markup.list:   "^[[:space:]]*[\\*+-] |^[[:space:]]*[0-9]+\\. "
 
       # misc
     - preproc:   "(\\(([CcRr]|[Tt][Mm])\\)|\\.{3}|(^|[[:space:]])\\-\\-($|[[:space:]]))"
 
-      # links
-    - constant: "\\[[^]]+\\]"
-    - constant: "\\[([^][]|\\[[^]]*\\])*\\]\\([^)]+\\)"
+      # link text  [text]  and  [text](url)
+    - markup.link: "\\[[^]]+\\]"
+    - markup.link: "\\[([^][]|\\[[^]]*\\])*\\]\\([^)]+\\)"
 
       # images
-    - underlined: "!\\[[^][]*\\](\\([^)]+\\)|\\[[^]]+\\])"
+    - markup.url: "!\\[[^][]*\\](\\([^)]+\\)|\\[[^]]+\\])"
 
-      # urls
-    - underlined: "https?://[^ )>]+"
+      # bare urls
+    - markup.url: "https?://[^ )>]+"
 
       # fenced / inline code
     - markup.code: "^```$"
