@@ -172,6 +172,25 @@
       # Ctrl-P / Ctrl-N also do substring history search
       bindkey "^P" history-substring-search-up
       bindkey "^N" history-substring-search-down
+
+      # rg + fzf + $EDITOR: grep file contents, pick a match (live bat
+      # preview), then open the file at the matched line.
+      rgo() {
+        [[ -z "$1" ]] && { echo "usage: rgo <pattern>"; return 1 }
+        local selection
+        selection=$(rg --line-number --no-heading --smart-case "$1" \
+          | fzf --delimiter : \
+                --preview 'bat --color=always --highlight-line {2} {1}' \
+                --preview-window 'right:60%:+{2}/3') || return
+        [[ -z "$selection" ]] && return
+        local file=$(echo "$selection" | cut -d: -f1)
+        local line=$(echo "$selection" | cut -d: -f2)
+        case "$EDITOR" in
+          *micro*)      "$EDITOR" +"$line" "$file" ;;
+          *hx*|*helix*) "$EDITOR" "$file:$line" ;;
+          *)            "$EDITOR" "$file" ;;
+        esac
+      }
     '';
   };
 }
