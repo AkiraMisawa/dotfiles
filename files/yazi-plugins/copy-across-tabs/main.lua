@@ -20,20 +20,27 @@ local function transform(url, mode)
   return s
 end
 
+-- UI state (cx.tabs, tab.selected) can only be touched inside a sync
+-- block, so collect everything we need here and return plain Lua
+-- values to the async entry below.
+local collect = ya.sync(function(_, mode)
+  local items = {}
+  local tab_count = #cx.tabs
+  for i = 1, tab_count do
+    local tab = cx.tabs[i]
+    if tab and tab.selected then
+      for _, url in pairs(tab.selected) do
+        table.insert(items, transform(url, mode))
+      end
+    end
+  end
+  return items, tab_count
+end)
+
 return {
   entry = function(_, job)
     local mode = (job and job.args and job.args[1]) or "path"
-
-    local items = {}
-    local tab_count = #cx.tabs
-    for i = 1, tab_count do
-      local tab = cx.tabs[i]
-      if tab and tab.selected then
-        for _, url in pairs(tab.selected) do
-          table.insert(items, transform(url, mode))
-        end
-      end
-    end
+    local items, tab_count = collect(mode)
 
     if #items == 0 then
       ya.notify {
