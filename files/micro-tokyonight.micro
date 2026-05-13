@@ -52,3 +52,8 @@ color-link hlsearch                 "#1a1b26,#e0af68"
 color-link diff-added               "#9ece6a,default"
 color-link diff-modified            "#e0af68,default"
 color-link diff-deleted             "#f7768e,default"
+
+# Markdown-specific tokens (used by files/micro-markdown.yaml).
+# Matches bat's tokyonight_night palette for headings / code.
+color-link markup.heading           "#73daca,default"
+color-link markup.code              "#89ddff,default"

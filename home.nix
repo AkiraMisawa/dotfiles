@@ -16,6 +16,8 @@
 
   xdg.configFile."micro/colorschemes/tokyonight.micro".source =
     ./files/micro-tokyonight.micro;
+  xdg.configFile."micro/syntax/markdown.yaml".source =
+    ./files/micro-markdown.yaml;
   xdg.configFile."micro/settings.json".text = builtins.toJSON {
     colorscheme = "tokyonight";
   };
