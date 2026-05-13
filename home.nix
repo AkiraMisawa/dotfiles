@@ -46,6 +46,13 @@
     p7zip
     chafa
     unar
+
+    # Runtime-independent LSPs picked up by helix automatically when on
+    # PATH. Language-runtime LSPs (rust-analyzer, gopls, pyright, ...)
+    # live in per-project flake devShells instead.
+    marksman                # markdown
+    nil                     # nix
+    yaml-language-server    # yaml
   ];
 
   programs.git = {
