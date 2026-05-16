@@ -1,5 +1,5 @@
 {
-  description = "amisa's dotfiles";
+  description = "akira's dotfiles";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
@@ -11,9 +11,11 @@
 
   outputs = { nixpkgs, home-manager, ... }:
     let
-      mkHome = { system, username, homeDirectory, extraModules ? [ ] }:
+      mkHome = { system, username, homeDirectory, gitName, gitEmail
+               , extraModules ? [ ] }:
         home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs.legacyPackages.${system};
+          extraSpecialArgs = { inherit gitName gitEmail; };
           modules = [
             ./home.nix
             { home = { inherit username homeDirectory; }; }
@@ -21,24 +23,21 @@
         };
     in {
       homeConfigurations = {
-        # WSL (Ubuntu)
-        "amisa@wsl" = mkHome {
+        "akira@wsl" = mkHome {
           system = "x86_64-linux";
-          username = "amisa";
-          homeDirectory = "/home/amisa";
+          username = "akira";
+          homeDirectory = "/home/akira";
+          gitName  = "akira";
+          gitEmail = "4346607+AkiraMisawa@users.noreply.github.com";
         };
 
-        # Placeholder for future hosts — duplicate and adjust:
-        # "amisa@mac" = mkHome {
-        #   system = "aarch64-darwin";
-        #   username = "amisa";
-        #   homeDirectory = "/Users/amisa";
-        # };
-        # "amisa@ubuntu" = mkHome {
-        #   system = "x86_64-linux";
-        #   username = "amisa";
-        #   homeDirectory = "/home/amisa";
-        # };
+        "misamisa@mac" = mkHome {
+          system = "aarch64-darwin";
+          username = "misamisa";
+          homeDirectory = "/Users/misamisa";
+          gitName  = "akira";
+          gitEmail = "4346607+AkiraMisawa@users.noreply.github.com";
+        };
       };
     };
 }

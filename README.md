@@ -49,52 +49,77 @@ cd ~/dotfiles
 
 ### 3. Apply with home-manager
 
-Pick the host config from `flake.nix` (currently `amisa@wsl`). The first run
-does not need home-manager pre-installed — `nix run` fetches it on demand:
+Pick the entry under `homeConfigurations` in `flake.nix` matching the
+machine. The first run does not need home-manager pre-installed —
+`nix run` fetches it on demand:
 
-```sh
-nix run home-manager/master -- switch --flake .#amisa@wsl -b backup
-```
+| Machine               | First run (no home-manager on PATH)                                                | Subsequent runs                                            |
+|-----------------------|------------------------------------------------------------------------------------|------------------------------------------------------------|
+| WSL (OS user `akira`) | `nix run home-manager/master -- switch --flake .#akira@wsl -b backup`              | `home-manager switch --flake ~/dotfiles#akira@wsl`         |
+| macOS (OS user `misamisa`) | `nix run home-manager/master -- switch --flake .#misamisa@mac -b backup`      | `home-manager switch --flake ~/dotfiles#misamisa@mac`      |
 
 `-b backup` renames any pre-existing dotfile that would be overwritten to
-`*.backup` instead of aborting. Useful on a machine that already has hand-rolled
-config you want to keep around.
+`*.backup` instead of aborting. This is how a Mac with existing `gnu stow`
+symlinks gets migrated cleanly: stow's symlinks become `*.backup`, the
+stow source tree is untouched, and `stow -D` can clean up afterward.
 
-After the first switch, `home-manager` is on `PATH`:
+### 4. Switch login shell to zsh (Linux only)
 
-```sh
-home-manager switch --flake ~/dotfiles#amisa@wsl
-```
+home-manager installs zsh but does not change the login shell. macOS
+already ships zsh as the default, so this step only applies on Linux.
 
-### 4. Switch login shell to zsh
-
-home-manager installs zsh but does not change the login shell. On Linux:
-
-```sh
-chsh -s "$(command -v zsh)"
-```
-
-On WSL you may also need to add the path to `/etc/shells` first if `chsh`
-complains:
+The zsh installed by home-manager lives at `~/.nix-profile/bin/zsh`,
+not at the system `/usr/bin/zsh` (Ubuntu does not ship zsh). `chsh`
+requires the target shell to be listed in `/etc/shells`, so add it
+first:
 
 ```sh
-command -v zsh | sudo tee -a /etc/shells
+echo "$HOME/.nix-profile/bin/zsh" | sudo tee -a /etc/shells
+chsh -s "$HOME/.nix-profile/bin/zsh"
 ```
 
 Open a new session to pick up the new shell.
 
+### 5. Install Claude Code (optional)
+
+Claude Code is intentionally not managed by Nix — its built-in
+auto-update conflicts with read-only `/nix/store` binaries. The
+official installer drops the binary at `~/.local/bin/claude`, which
+`home.sessionPath` already exposes:
+
+```sh
+curl -fsSL https://claude.ai/install.sh | bash
+```
+
+Auto-updates run in the background. Run `claude` in any project to
+authenticate on first use.
+
 ## Adding a new host
 
-Duplicate a block under `homeConfigurations` in `flake.nix` with the right
-`system`, `username`, and `homeDirectory`, then run the apply command with the
-new name.
+Each entry under `homeConfigurations` in `flake.nix` is keyed by
+`<OS-user>@<host>` and pins the `(system, username, homeDirectory)`
+tuple plus git identity. Reuse an existing entry on any machine whose
+tuple matches it; add a new one only when you have a new tuple (e.g.
+a different OS user, or a work-account git identity).
 
-| Target              | `system`         | `homeDirectory`  |
-|---------------------|------------------|------------------|
-| WSL / Linux x86_64  | `x86_64-linux`   | `/home/<user>`   |
-| Linux ARM           | `aarch64-linux`  | `/home/<user>`   |
-| Apple Silicon macOS | `aarch64-darwin` | `/Users/<user>`  |
-| Intel macOS         | `x86_64-darwin`  | `/Users/<user>`  |
+```nix
+"newuser@laptop" = mkHome {
+  system = "aarch64-darwin";
+  username = "newuser";
+  homeDirectory = "/Users/newuser";
+  gitName  = "Real Name";
+  gitEmail = "you@example.com";
+};
+```
+
+Apply with `home-manager switch --flake .#newuser@laptop`.
+
+| Target              | `system`         | `homeDirectory`     |
+|---------------------|------------------|---------------------|
+| WSL / Linux x86_64  | `x86_64-linux`   | `/home/<user>`      |
+| Linux ARM           | `aarch64-linux`  | `/home/<user>`      |
+| Apple Silicon macOS | `aarch64-darwin` | `/Users/<user>`     |
+| Intel macOS         | `x86_64-darwin`  | `/Users/<user>`     |
 
 On macOS, this setup manages user-level config only. For system-level macOS
 settings (defaults, launchd, Homebrew bridging) use
@@ -105,7 +130,7 @@ settings (defaults, launchd, Homebrew bridging) use
 ```sh
 cd ~/dotfiles
 nix flake update                                  # bump nixpkgs / home-manager
-home-manager switch --flake .#amisa@wsl
+home-manager switch --flake .#akira@wsl           # or .#misamisa@mac on Mac
 ```
 
 Roll back if a switch broke something:
