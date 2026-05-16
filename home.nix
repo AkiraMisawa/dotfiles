@@ -1,8 +1,8 @@
-{ pkgs, ... }:
+{ pkgs, lib, gitName, gitEmail, ... }:
 {
   home.stateVersion = "25.11";
 
-  targets.genericLinux.enable = true;
+  targets.genericLinux.enable = pkgs.stdenv.isLinux;
 
   home.sessionPath = [
     "$HOME/.local/bin"
@@ -21,6 +21,30 @@
   xdg.configFile."micro/settings.json".text = builtins.toJSON {
     colorscheme = "tokyonight";
   };
+
+  # --- Claude Code (statusline + settings.json merge only) ---
+  # The binary itself is installed via the official installer so its
+  # in-place auto-update keeps working. We only manage the statusline
+  # script and weave the `statusLine` entry into ~/.claude/settings.json.
+  home.file.".claude/statusline.sh" = {
+    source = ./files/claude-statusline.sh;
+    executable = true;
+  };
+
+  home.activation.claudeStatusLineConfig =
+    lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+      $DRY_RUN_CMD mkdir -p "$HOME/.claude"
+      settings="$HOME/.claude/settings.json"
+      [ -s "$settings" ] || echo '{}' > "$settings"
+      tmp=$(mktemp)
+      ${pkgs.jq}/bin/jq '. + {
+        statusLine: {
+          type: "command",
+          command: "~/.claude/statusline.sh",
+          padding: 1
+        }
+      }' "$settings" > "$tmp" && mv "$tmp" "$settings"
+    '';
 
   programs.home-manager.enable = true;
 
@@ -58,8 +82,8 @@
   programs.git = {
     enable = true;
     settings = {
-      user.name = "akira";
-      user.email = "4346607+AkiraMisawa@users.noreply.github.com";
+      user.name = gitName;
+      user.email = gitEmail;
       init.defaultBranch = "main";
       core.autocrlf = "input";
       pull.rebase = false;
