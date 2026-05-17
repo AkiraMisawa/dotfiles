@@ -10,14 +10,29 @@ plus yazi preview helpers).
 
 ## New-machine setup
 
-A fresh machine almost never has `nix` installed, so step 1 is the
-prerequisite — without it nothing else works.
+One command does everything — Nix install, GitHub auth + SSH key registration,
+clone, home-manager switch, and (on Linux) login-shell change:
 
-### 1. Install Nix (with flakes enabled)
+```sh
+bash <(curl -fsSL https://raw.githubusercontent.com/AkiraMisawa/dotfiles/main/bootstrap.sh)
+```
+
+`bash <(curl ...)` (not `curl ... | bash`) keeps stdin attached to the
+terminal, which the interactive `gh auth login --web` prompt needs.
+
+The script ([`bootstrap.sh`](./bootstrap.sh)) is idempotent — each step
+detects "already done" and skips, so re-running after a failure is safe.
+It picks the right `homeConfigurations` entry from `uname -s` /
+`/proc/version`: Darwin → `misamisa@mac`, WSL → `akira@wsl`.
+
+### Manual fallback
+
+If something in `bootstrap.sh` breaks, run the steps by hand.
+
+#### 1. Install Nix (with flakes enabled)
 
 The [Determinate Systems installer](https://github.com/DeterminateSystems/nix-installer)
-is the easiest path. It works on Linux (including WSL) and macOS, and enables
-flakes by default:
+works on Linux (including WSL) and macOS, and enables flakes by default:
 
 ```sh
 curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install
@@ -37,17 +52,23 @@ mkdir -p ~/.config/nix
 echo 'experimental-features = nix-command flakes' >> ~/.config/nix/nix.conf
 ```
 
-### 2. Clone this repo
-
-`git` ships on most distros; if not, `nix-shell -p git` works once Nix is
-installed.
+#### 2. Authenticate with GitHub (generates + uploads SSH key)
 
 ```sh
-git clone https://github.com/AkiraMisawa/dotfiles ~/dotfiles
+nix run nixpkgs#gh -- auth login --hostname github.com --git-protocol ssh --web
+```
+
+This single command generates an ed25519 key (if missing), uploads the
+public key to GitHub, and sets git's default protocol to SSH.
+
+#### 3. Clone this repo
+
+```sh
+git clone git@github.com:AkiraMisawa/dotfiles ~/dotfiles
 cd ~/dotfiles
 ```
 
-### 3. Apply with home-manager
+#### 4. Apply with home-manager
 
 Pick the entry under `homeConfigurations` in `flake.nix` matching the
 machine. The first run does not need home-manager pre-installed —
@@ -63,7 +84,7 @@ machine. The first run does not need home-manager pre-installed —
 symlinks gets migrated cleanly: stow's symlinks become `*.backup`, the
 stow source tree is untouched, and `stow -D` can clean up afterward.
 
-### 4. Switch login shell to zsh (Linux only)
+#### 5. Switch login shell to zsh (Linux only)
 
 home-manager installs zsh but does not change the login shell. macOS
 already ships zsh as the default, so this step only applies on Linux.
@@ -80,7 +101,7 @@ chsh -s "$HOME/.nix-profile/bin/zsh"
 
 Open a new session to pick up the new shell.
 
-### 5. Install Claude Code (optional)
+### Install Claude Code (optional)
 
 Claude Code is intentionally not managed by Nix — its built-in
 auto-update conflicts with read-only `/nix/store` binaries. The
@@ -143,6 +164,7 @@ home-manager rollback
 ## Layout
 
 ```
+bootstrap.sh  # one-shot new-machine installer (fetched via curl from raw URL)
 flake.nix     # inputs (nixpkgs, home-manager) and per-host configurations
 home.nix      # user environment: packages, programs, zsh, git, ...
 files/        # static assets sourced from home.nix (e.g. p10k.zsh)
