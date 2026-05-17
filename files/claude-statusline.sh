@@ -55,41 +55,36 @@ pct_color() { # $1=value $2=mid $3=hi
   fi
 }
 
-# ---- Build line 1 (model / effort / branch) ----
-line1=()
+# ---- Build segments (model / effort / ctx / 5h / 7d / cost / branch) ----
+segs=()
 if [ -n "$EFFORT" ]; then
-  line1+=( "${MODEL_FG}${MODEL}${RESET} ${SEP}|${RESET} ${MAGENTA}${EFFORT}${RESET}" )
+  segs+=( "${MODEL_FG}${MODEL}${RESET} ${SEP}|${RESET} ${MAGENTA}${EFFORT}${RESET}" )
 else
-  line1+=( "${MODEL_FG}${MODEL}${RESET}" )
+  segs+=( "${MODEL_FG}${MODEL}${RESET}" )
 fi
-[ -n "$BRANCH" ] && line1+=( "${GREEN}🌿 ${BRANCH}${RESET}" )
 
-# ---- Build line 2 (ctx / 5h / 7d / cost) ----
-line2=()
 ctx_c=$(pct_color "$CTX" 70 90)
-line2+=( "${LABEL}ctx${RESET} ${ctx_c}${CTX}%${RESET}" )
+segs+=( "${LABEL}ctx${RESET} ${ctx_c}${CTX}%${RESET}" )
 if [ -n "$FIVE_H" ]; then
   five_int=$(printf '%.0f' "$FIVE_H")
   five_c=$(pct_color "$five_int" 50 80)
-  line2+=( "${LABEL}5h${RESET} ${five_c}${five_int}%${RESET}" )
+  segs+=( "${LABEL}5h${RESET} ${five_c}${five_int}%${RESET}" )
 fi
 if [ -n "$SEVEN_D" ]; then
   seven_int=$(printf '%.0f' "$SEVEN_D")
   seven_c=$(pct_color "$seven_int" 50 80)
-  line2+=( "${LABEL}7d${RESET} ${seven_c}${seven_int}%${RESET}" )
+  segs+=( "${LABEL}7d${RESET} ${seven_c}${seven_int}%${RESET}" )
 fi
 cost_fmt=$(printf '$%.2f' "$COST")
-line2+=( "${YELLOW}${cost_fmt}${RESET}" )
+segs+=( "${YELLOW}${cost_fmt}${RESET}" )
 
-# ---- Join each line with " | " and print ----
+[ -n "$BRANCH" ] && segs+=( "${GREEN}🌿 ${BRANCH}${RESET}" )
+
+# ---- Join with " | " and print ----
 sep=" ${SEP}|${RESET} "
-join_segs() {
-  local out="" s
-  for s in "$@"; do
-    [ -n "$out" ] && out+="$sep"
-    out+="$s"
-  done
-  printf '%b\n' "$out"
-}
-join_segs "${line1[@]}"
-join_segs "${line2[@]}"
+out=""
+for s in "${segs[@]}"; do
+  [ -n "$out" ] && out+="$sep"
+  out+="$s"
+done
+printf '%b\n' "$out"
