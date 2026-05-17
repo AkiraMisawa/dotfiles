@@ -100,4 +100,15 @@ if [[ "$(uname -s)" == "Linux" ]]; then
   fi
 fi
 
+# --- Install Claude Code -----------------------------------------------------
+# Intentionally not managed by Nix — its built-in auto-update conflicts with
+# read-only /nix/store binaries. Installer drops the binary at ~/.local/bin/claude,
+# which home.sessionPath already exposes.
+if [[ -x "${HOME}/.local/bin/claude" ]] || command -v claude >/dev/null 2>&1; then
+  skip "claude already installed"
+else
+  log "Installing Claude Code..."
+  curl -fsSL https://claude.ai/install.sh | bash
+fi
+
 log "Done. Open a new shell to pick up the new environment."
