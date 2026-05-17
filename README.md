@@ -11,7 +11,8 @@ plus yazi preview helpers).
 ## New-machine setup
 
 One command does everything — Nix install, GitHub auth + SSH key registration,
-clone, home-manager switch, and (on Linux) login-shell change:
+clone, home-manager switch, (on Linux) login-shell change, and Claude Code
+install:
 
 ```sh
 bash <(curl -fsSL https://raw.githubusercontent.com/AkiraMisawa/dotfiles/main/bootstrap.sh)
@@ -101,7 +102,7 @@ chsh -s "$HOME/.nix-profile/bin/zsh"
 
 Open a new session to pick up the new shell.
 
-### Install Claude Code (optional)
+#### 6. Install Claude Code
 
 Claude Code is intentionally not managed by Nix — its built-in
 auto-update conflicts with read-only `/nix/store` binaries. The
