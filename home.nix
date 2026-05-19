@@ -77,6 +77,16 @@
     marksman                # markdown
     nil                     # nix
     yaml-language-server    # yaml
+
+    # Claude Code token usage — wrapper keeps `bun` off PATH while
+    # letting `bun x` fetch the latest ccusage on demand.
+    (writeShellApplication {
+      name = "ccusage";
+      runtimeInputs = [ bun ];
+      text = ''
+        exec bun x ccusage "$@"
+      '';
+    })
   ];
 
   programs.git = {
