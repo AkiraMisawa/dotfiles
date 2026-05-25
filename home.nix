@@ -215,6 +215,13 @@
           run = "plugin copy-across-tabs -- noext";
           desc = "Copy filenames (no ext) across all tabs";
         }
+        {
+          # WSL: reveal the current directory in Windows Explorer.
+          # `--orphan` detaches it from yazi's process lifecycle.
+          on = [ "E" ];
+          run = "shell 'explorer.exe .' --orphan";
+          desc = "Open current dir in Windows Explorer";
+        }
       ];
     };
   };
