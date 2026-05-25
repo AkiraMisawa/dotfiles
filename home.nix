@@ -63,6 +63,13 @@
     emacs
     starship
 
+    # System monitoring / inspection — all Rust.
+    bottom                  # btm: htop alternative, graphs + mouse
+    procs                   # ps alternative, colored process listing
+    dust                    # du alternative, tree view of disk usage
+    bandwhich               # per-process network bandwidth monitor
+    hyperfine               # command-line benchmarking
+
     # yazi preview/extraction helpers
     ffmpegthumbnailer
     poppler-utils
