@@ -28,12 +28,13 @@ mapfile -t F < <(
     (.rate_limits.seven_day.used_percentage  // "" | tostring),
     (.cost.total_cost_usd    // 0 | tostring),
     .workspace.current_dir   // ".",
-    .session_id              // "nosession"
+    .session_id              // "nosession",
+    (.context_window.total_input_tokens // 0 | tostring)
   ' <<<"$input"
 )
 MODEL=${F[0]}; EFFORT=${F[1]}; CTX=${F[2]}
 FIVE_H=${F[3]}; SEVEN_D=${F[4]}; COST=${F[5]}
-CWD=${F[6]}; SESSION=${F[7]}
+CWD=${F[6]}; SESSION=${F[7]}; CTX_TOK=${F[8]}
 
 # ---- git branch (cached 5s per session_id) ----
 CACHE="/tmp/claude-statusline-git-${SESSION}"
@@ -55,6 +56,14 @@ pct_color() { # $1=value $2=mid $3=hi
   fi
 }
 
+# ---- Human-readable token count: 512 -> "512", 2000 -> "2k", 25600 -> "25.6k" ----
+fmt_tokens() { # $1=integer token count
+  awk -v n="$1" 'BEGIN {
+    if (n < 1000) { printf "%d", n; exit }
+    s = sprintf("%.1f", n / 1000); sub(/\.0$/, "", s); printf "%sk", s
+  }'
+}
+
 # ---- Build segments (model / effort / ctx / 5h / 7d / cost / branch) ----
 segs=()
 if [ -n "$EFFORT" ]; then
@@ -64,7 +73,8 @@ else
 fi
 
 ctx_c=$(pct_color "$CTX" 70 90)
-segs+=( "${LABEL}ctx${RESET} ${ctx_c}${CTX}%${RESET}" )
+ctx_tok=$(fmt_tokens "$CTX_TOK")
+segs+=( "${LABEL}ctx${RESET} ${LABEL}${ctx_tok}${RESET} ${ctx_c}${CTX}%${RESET}" )
 if [ -n "$FIVE_H" ]; then
   five_int=$(printf '%.0f' "$FIVE_H")
   five_c=$(pct_color "$five_int" 50 80)
