@@ -116,6 +116,38 @@
 
   programs.gh.enable = true;
   programs.lazygit.enable = true;
+
+  programs.gitui = {
+    enable = true;
+    # Tokyo Night (Gogh) palette — same family as the micro/helix themes.
+    # bg #1a1b26 / fg #a9b1d6 / blue #7aa2f7 / red #f7768e / green #9ece6a.
+    theme = ''
+      (
+          selected_tab: Some("#7aa2f7"),
+          command_fg: Some("#a9b1d6"),
+          selection_bg: Some("#283457"),
+          selection_fg: Some("#c0caf5"),
+          cmdbar_bg: Some("#1f2335"),
+          cmdbar_extra_lines_bg: Some("#1f2335"),
+          disabled_fg: Some("#565f89"),
+          diff_line_add: Some("#9ece6a"),
+          diff_line_delete: Some("#f7768e"),
+          diff_file_added: Some("#9ece6a"),
+          diff_file_removed: Some("#db4b4b"),
+          diff_file_moved: Some("#bb9af7"),
+          diff_file_modified: Some("#ff9e64"),
+          commit_hash: Some("#bb9af7"),
+          commit_time: Some("#a9b1d6"),
+          commit_author: Some("#7dcfff"),
+          danger_fg: Some("#f7768e"),
+          push_gauge_bg: Some("#7aa2f7"),
+          push_gauge_fg: Some("#1a1b26"),
+          tag_fg: Some("#73daca"),
+          branch_fg: Some("#9ece6a"),
+      )
+    '';
+  };
+
   programs.helix = {
     enable = true;
     settings = {
@@ -130,6 +162,11 @@
         lsp.display-messages = true;
         soft-wrap.enable = true;
       };
+      # Open gitui in a zellij floating pane (requires running inside a
+      # zellij session). `zellij run` returns immediately, so :sh doesn't
+      # block the editor. Rebind if C-g clashes with your muscle memory.
+      keys.normal."C-g" =
+        ":sh zellij run --floating --close-on-exit --name gitui -- gitui";
     };
   };
 
