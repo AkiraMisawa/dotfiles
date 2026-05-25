@@ -1,0 +1,25 @@
+# ~/.config/helix/config.toml — translated from programs.helix.settings in
+# ../../home.nix. Symlinked by bootstrap.sh.
+
+theme = "tokyonight"
+
+[editor]
+line-number = "relative"
+cursorline = true
+mouse = true
+bufferline = "multiple"
+color-modes = true
+
+[editor.indent-guides]
+render = true
+
+[editor.lsp]
+display-messages = true
+
+[editor.soft-wrap]
+enable = true
+
+# Open gitui in a zellij floating pane (requires running inside a zellij
+# session). `zellij run` returns immediately, so :sh doesn't block the editor.
+[keys.normal]
+C-g = ":sh zellij run --floating --close-on-exit --name gitui -- gitui"

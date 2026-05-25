@@ -1,0 +1,30 @@
+# ~/.config/yazi/keymap.toml — translated from programs.yazi.keymap in
+# ../../home.nix. Symlinked by bootstrap.sh. The copy-across-tabs plugin itself
+# is symlinked from ../../files/yazi-plugins/copy-across-tabs.
+
+[[mgr.append_keymap]]
+on = ["c", "C"]
+run = "plugin copy-across-tabs"
+desc = "Copy paths across all tabs"
+
+[[mgr.append_keymap]]
+on = ["c", "D"]
+run = "plugin copy-across-tabs -- dirname"
+desc = "Copy dirnames across all tabs"
+
+[[mgr.append_keymap]]
+on = ["c", "F"]
+run = "plugin copy-across-tabs -- filename"
+desc = "Copy filenames across all tabs"
+
+[[mgr.append_keymap]]
+on = ["c", "N"]
+run = "plugin copy-across-tabs -- noext"
+desc = "Copy filenames (no ext) across all tabs"
+
+# WSL: reveal the current directory in Windows Explorer.
+# `--orphan` detaches it from yazi's process lifecycle.
+[[mgr.append_keymap]]
+on = ["E"]
+run = "shell 'explorer.exe .' --orphan"
+desc = "Open current dir in Windows Explorer"

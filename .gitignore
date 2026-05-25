@@ -4,3 +4,6 @@ result-*
 
 # Local-only notes (not part of the public repo)
 WORKFLOWS.md
+
+# Company-specific values (proxy, CA path, work git email)
+nonix/env.local

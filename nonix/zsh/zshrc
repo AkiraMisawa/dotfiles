@@ -1,0 +1,118 @@
+# ~/.zshrc — no-Nix hand-written equivalent of the zshrc home-manager
+# generated from `programs.zsh` in ../../home.nix. Symlinked by bootstrap.sh.
+
+# --- Powerlevel10k instant prompt (must stay near the very top) --------------
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
+# --- Environment -------------------------------------------------------------
+export EDITOR=hx
+export VISUAL=hx
+export PAGER=moar           # home.nix sets PAGER="moor" but the binary is `moar`
+typeset -U path             # de-dupe PATH
+path=("$HOME/.local/bin" $path)
+export PATH
+
+# Corporate CA for node-based tools / Claude Code (no-op if file absent).
+if [[ -f /etc/ssl/certs/ca-certificates.crt ]]; then
+  export SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt
+  export NODE_EXTRA_CA_CERTS=/etc/ssl/certs/ca-certificates.crt
+fi
+
+# --- Completions -------------------------------------------------------------
+autoload -U compinit && compinit
+
+# --- zsh plugins -------------------------------------------------------------
+ZSH_PLUGIN_DIR="$HOME/.local/share/zsh/plugins"
+source "$ZSH_PLUGIN_DIR/powerlevel10k/powerlevel10k.zsh-theme"
+source "$ZSH_PLUGIN_DIR/zsh-autosuggestions/zsh-autosuggestions.zsh"
+source "$ZSH_PLUGIN_DIR/zsh-history-substring-search/zsh-history-substring-search.zsh"
+# syntax-highlighting must be sourced LAST.
+source "$ZSH_PLUGIN_DIR/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+
+# Powerlevel10k config (the repo's files/p10k.zsh, symlinked to ~/.p10k.zsh).
+[[ -f ~/.p10k.zsh ]] && source ~/.p10k.zsh
+
+# --- History -----------------------------------------------------------------
+HISTFILE="$HOME/.zsh_history"
+HISTSIZE=10000
+SAVEHIST=10000
+setopt HIST_EXPIRE_DUPS_FIRST   # programs.zsh history.expireDuplicatesFirst
+setopt HIST_IGNORE_DUPS
+setopt SHARE_HISTORY
+setopt HIST_VERIFY
+
+# --- Aliases -----------------------------------------------------------------
+alias z=cd                      # zoxide installs `cd`; keep the z/zi shorthands
+alias zi=cdi
+
+# eza (mirrors programs.eza extraOptions + git + icons).
+alias ls='eza --group-directories-first --header --time-style=long-iso --git --icons=auto'
+alias ll='ls -l'
+alias la='ls -la'
+alias lt='ls --tree'
+
+# --- Tool integrations -------------------------------------------------------
+command -v zoxide >/dev/null 2>&1 && eval "$(zoxide init zsh --cmd cd)"
+
+# fzf: newer versions ship `--zsh`; the apt package is older, so fall back to
+# the example scripts it installs under /usr/share.
+if command -v fzf >/dev/null 2>&1; then
+  if fzf --zsh >/dev/null 2>&1; then
+    source <(fzf --zsh)
+  else
+    for f in /usr/share/doc/fzf/examples/key-bindings.zsh \
+             /usr/share/doc/fzf/examples/completion.zsh \
+             /usr/share/fzf/key-bindings.zsh \
+             /usr/share/fzf/completion.zsh; do
+      [[ -r "$f" ]] && source "$f"
+    done
+  fi
+fi
+
+# yazi wrapper (programs.yazi shellWrapperName = "y"): cd to yazi's last dir.
+if command -v yazi >/dev/null 2>&1; then
+  y() {
+    local tmp cwd
+    tmp="$(mktemp -t yazi-cwd.XXXXXX)"
+    yazi "$@" --cwd-file="$tmp"
+    if cwd="$(command cat -- "$tmp")" && [[ -n "$cwd" && "$cwd" != "$PWD" ]]; then
+      builtin cd -- "$cwd"
+    fi
+    rm -f -- "$tmp"
+  }
+fi
+
+# --- Key bindings (from home.nix initContent) --------------------------------
+# Home / End / Delete (application, CSI, and legacy sequences).
+bindkey "^[OH"  beginning-of-line
+bindkey "^[OF"  end-of-line
+bindkey "^[[H"  beginning-of-line
+bindkey "^[[F"  end-of-line
+bindkey "^[[1~" beginning-of-line
+bindkey "^[[4~" end-of-line
+bindkey "^[[3~" delete-char
+
+# Ctrl-P / Ctrl-N also do substring history search.
+bindkey "^P" history-substring-search-up
+bindkey "^N" history-substring-search-down
+
+# --- rgo: rg + fzf + $EDITOR (from home.nix initContent) ---------------------
+# grep file contents, pick a match (live bat preview), open at the matched line.
+rgo() {
+  [[ -z "$1" ]] && { echo "usage: rgo <pattern>"; return 1 }
+  local selection
+  selection=$(rg --line-number --no-heading --smart-case "$1" \
+    | fzf --delimiter : \
+          --preview 'bat --color=always --highlight-line {2} {1}' \
+          --preview-window 'right:60%:+{2}/3') || return
+  [[ -z "$selection" ]] && return
+  local file=$(echo "$selection" | cut -d: -f1)
+  local line=$(echo "$selection" | cut -d: -f2)
+  case "$EDITOR" in
+    *micro*)      "$EDITOR" +"$line" "$file" ;;
+    *hx*|*helix*) "$EDITOR" "$file:$line" ;;
+    *)            "$EDITOR" "$file" ;;
+  esac
+}

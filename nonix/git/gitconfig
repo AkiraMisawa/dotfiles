@@ -1,0 +1,38 @@
+# ~/.gitconfig — no-Nix equivalent of programs.git + programs.delta in
+# ../../home.nix. Symlinked by bootstrap.sh.
+#
+# The company email is NOT here (it is site-specific). bootstrap writes it to
+# ~/.gitconfig.local, included at the end of this file.
+
+[user]
+	name = akira
+
+[init]
+	defaultBranch = main
+
+[core]
+	autocrlf = input
+	pager = delta
+
+[pull]
+	rebase = false
+
+[fetch]
+	prune = true
+
+[rerere]
+	enabled = true
+
+# --- delta (programs.delta + enableGitIntegration) ---
+[interactive]
+	diffFilter = delta --color-only
+
+[delta]
+	navigate = true
+
+[merge]
+	conflictStyle = zdiff3
+
+# --- site-specific overrides (company email, etc.) — not committed ---
+[include]
+	path = ~/.gitconfig.local
