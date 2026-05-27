@@ -231,6 +231,8 @@ link "$FILES_DIR/p10k.zsh"           "$HOME/.p10k.zsh"
 link "$SCRIPT_DIR/git/gitconfig"     "$HOME/.gitconfig"
 link "$SCRIPT_DIR/gitui/theme.ron"   "$HOME/.config/gitui/theme.ron"
 link "$SCRIPT_DIR/helix/config.toml" "$HOME/.config/helix/config.toml"
+link "$SCRIPT_DIR/helix/themes/tokyonight-transparent.toml" \
+     "$HOME/.config/helix/themes/tokyonight-transparent.toml"
 link "$SCRIPT_DIR/yazi/keymap.toml"  "$HOME/.config/yazi/keymap.toml"
 link "$FILES_DIR/yazi-plugins/copy-across-tabs" \
      "$HOME/.config/yazi/plugins/copy-across-tabs"

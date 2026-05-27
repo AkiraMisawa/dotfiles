@@ -1,0 +1,7 @@
+# Mirrors programs.helix.themes.tokyonight-transparent in ../../../home.nix.
+# Inherits tokyonight but drops the editor background so Helix shows the
+# terminal's window background instead of painting its own opaque #1a1b26.
+inherits = "tokyonight"
+
+["ui.background"]
+fg = "fg"

@@ -151,7 +151,7 @@
   programs.helix = {
     enable = true;
     settings = {
-      theme = "tokyonight";
+      theme = "tokyonight-transparent";
       editor = {
         line-number = "relative";
         cursorline = true;
@@ -167,6 +167,13 @@
       # block the editor. Rebind if C-g clashes with your muscle memory.
       keys.normal."C-g" =
         ":sh zellij run --floating --close-on-exit --name gitui -- gitui";
+    };
+    # Inherit tokyonight but drop the editor background so Helix shows
+    # wezterm's (transparent black) window background instead of painting
+    # its own opaque #1a1b26. Keeps fg + all other UI colors intact.
+    themes.tokyonight-transparent = {
+      inherits = "tokyonight";
+      "ui.background" = { fg = "fg"; };
     };
   };
 
