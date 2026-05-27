@@ -17,9 +17,11 @@ YELLOW=$'\033[38;2;224;175;104m' # #e0af68  warn / cost
 RED=$'\033[38;2;247;118;142m'    # #f7768e  critical
 RESET=$'\033[0m'
 
-# ---- One jq pass: emit one field per line. mapfile preserves empty lines so
-#      absent fields stay aligned (bash `read` collapses adjacent IFS tabs). ----
-mapfile -t F < <(
+# ---- One jq pass: emit one field per line. Read line-by-line (instead of
+#      `mapfile`, a bash 4+ builtin absent from macOS's bash 3.2) with `IFS=`
+#      so empty lines are preserved and absent fields stay aligned. ----
+F=()
+while IFS= read -r line; do F+=( "$line" ); done < <(
   jq -r '
     .model.display_name      // "?",
     .effort.level            // "",
