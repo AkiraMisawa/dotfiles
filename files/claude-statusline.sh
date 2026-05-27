@@ -12,7 +12,7 @@ SEP=$'\033[38;2;65;72;104m'       # #414868  separators (Gogh color_01)
 LABEL=$'\033[38;2;86;95;137m'     # #565f89  ctx/5h/7d labels (Helix `comment`)
 MODEL_FG=$'\033[38;2;122;162;247m' # #7aa2f7  model (Tokyo Night blue — Helix markup.heading)
 MAGENTA=$'\033[38;2;187;154;247m' # #bb9af7  effort
-GREEN=$'\033[38;2;158;206;106m'  # #9ece6a  ok / branch
+BLUE=$'\033[38;2;122;162;247m'   # #7aa2f7  ok / branch (Tokyo Night blue)
 YELLOW=$'\033[38;2;224;175;104m' # #e0af68  warn / cost
 RED=$'\033[38;2;247;118;142m'    # #f7768e  critical
 RESET=$'\033[0m'
@@ -54,7 +54,7 @@ pct_color() { # $1=value $2=mid $3=hi
   local v="${1%.*}"
   if   [ "$v" -ge "$3" ]; then printf '%s' "$RED"
   elif [ "$v" -ge "$2" ]; then printf '%s' "$YELLOW"
-  else                          printf '%s' "$GREEN"
+  else                          printf '%s' "$BLUE"
   fi
 }
 
@@ -90,7 +90,7 @@ fi
 cost_fmt=$(printf '$%.2f' "$COST")
 segs+=( "${YELLOW}${cost_fmt}${RESET}" )
 
-[ -n "$BRANCH" ] && segs+=( "${GREEN}🌿 ${BRANCH}${RESET}" )
+[ -n "$BRANCH" ] && segs+=( "${BLUE}🌿 ${BRANCH}${RESET}" )
 
 # ---- Join with " | " and print ----
 sep=" ${SEP}|${RESET} "
