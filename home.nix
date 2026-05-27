@@ -61,7 +61,6 @@
     yq-go
     zellij
     emacs
-    starship
 
     # System monitoring / inspection — all Rust.
     bottom                  # btm: htop alternative, graphs + mouse
