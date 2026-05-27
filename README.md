@@ -24,7 +24,7 @@ terminal, which the interactive `gh auth login --web` prompt needs.
 The script ([`bootstrap.sh`](./bootstrap.sh)) is idempotent — each step
 detects "already done" and skips, so re-running after a failure is safe.
 It picks the right `homeConfigurations` entry from `uname -s` /
-`/proc/version`: Darwin → `misamisa@mac`, WSL → `akira@wsl`.
+`/proc/version`: Darwin → `akira338@mac`, WSL → `akira@wsl`.
 
 ### Manual fallback
 
@@ -78,7 +78,7 @@ machine. The first run does not need home-manager pre-installed —
 | Machine               | First run (no home-manager on PATH)                                                | Subsequent runs                                            |
 |-----------------------|------------------------------------------------------------------------------------|------------------------------------------------------------|
 | WSL (OS user `akira`) | `nix run home-manager/master -- switch --flake .#akira@wsl -b backup`              | `home-manager switch --flake ~/dotfiles#akira@wsl`         |
-| macOS (OS user `misamisa`) | `nix run home-manager/master -- switch --flake .#misamisa@mac -b backup`      | `home-manager switch --flake ~/dotfiles#misamisa@mac`      |
+| macOS (OS user `akira338`) | `nix run home-manager/master -- switch --flake .#akira338@mac -b backup`     | `home-manager switch --flake ~/dotfiles#akira338@mac`      |
 
 `-b backup` renames any pre-existing dotfile that would be overwritten to
 `*.backup` instead of aborting. This is how a Mac with existing `gnu stow`
@@ -152,7 +152,7 @@ settings (defaults, launchd, Homebrew bridging) use
 ```sh
 cd ~/dotfiles
 nix flake update                                  # bump nixpkgs / home-manager
-home-manager switch --flake .#akira@wsl           # or .#misamisa@mac on Mac
+home-manager switch --flake .#akira@wsl           # or .#akira338@mac on Mac
 ```
 
 Roll back if a switch broke something:

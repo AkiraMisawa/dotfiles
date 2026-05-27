@@ -31,10 +31,10 @@
           gitEmail = "4346607+AkiraMisawa@users.noreply.github.com";
         };
 
-        "misamisa@mac" = mkHome {
+        "akira338@mac" = mkHome {
           system = "aarch64-darwin";
-          username = "misamisa";
-          homeDirectory = "/Users/misamisa";
+          username = "akira338";
+          homeDirectory = "/Users/akira338";
           gitName  = "akira";
           gitEmail = "4346607+AkiraMisawa@users.noreply.github.com";
         };

@@ -14,7 +14,7 @@ skip() { printf '\033[1;33m--\033[0m %s (skip)\n' "$*"; }
 # --- Detect platform → home-manager flake target -----------------------------
 case "$(uname -s)" in
   Darwin)
-    HOST="misamisa@mac"
+    HOST="akira338@mac"
     ;;
   Linux)
     if grep -qiE 'microsoft|wsl' /proc/version 2>/dev/null; then
