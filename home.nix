@@ -215,6 +215,7 @@
           run = "plugin copy-across-tabs -- noext";
           desc = "Copy filenames (no ext) across all tabs";
         }
+      ] ++ lib.optionals pkgs.stdenv.isLinux [
         {
           # WSL: reveal the current directory in Windows Explorer.
           # `--orphan` detaches it from yazi's process lifecycle.
