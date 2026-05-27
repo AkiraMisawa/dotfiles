@@ -31,6 +31,16 @@ source "$ZSH_PLUGIN_DIR/zsh-history-substring-search/zsh-history-substring-searc
 # syntax-highlighting must be sourced LAST.
 source "$ZSH_PLUGIN_DIR/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
 
+# Tokyo Night blue (#7aa2f7) for command names, instead of the
+# zsh-syntax-highlighting default green (`fg=green`). Mirrors the
+# syntaxHighlighting.styles block in ../../home.nix.
+ZSH_HIGHLIGHT_STYLES[command]='fg=#7aa2f7'
+ZSH_HIGHLIGHT_STYLES[builtin]='fg=#7aa2f7'
+ZSH_HIGHLIGHT_STYLES[function]='fg=#7aa2f7'
+ZSH_HIGHLIGHT_STYLES[alias]='fg=#7aa2f7'
+ZSH_HIGHLIGHT_STYLES[precommand]='fg=#7aa2f7'
+ZSH_HIGHLIGHT_STYLES[hashed-command]='fg=#7aa2f7'
+
 # Powerlevel10k config (the repo's files/p10k.zsh, symlinked to ~/.p10k.zsh).
 [[ -f ~/.p10k.zsh ]] && source ~/.p10k.zsh
 

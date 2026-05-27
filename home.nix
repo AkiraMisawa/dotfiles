@@ -241,7 +241,19 @@
   programs.zsh = {
     enable = true;
     autosuggestion.enable = true;
-    syntaxHighlighting.enable = true;
+    syntaxHighlighting = {
+      enable = true;
+      # Tokyo Night blue (#7aa2f7) for command names, instead of the
+      # zsh-syntax-highlighting default green (`fg=green`).
+      styles = {
+        command = "fg=#7aa2f7";
+        builtin = "fg=#7aa2f7";
+        function = "fg=#7aa2f7";
+        alias = "fg=#7aa2f7";
+        precommand = "fg=#7aa2f7";
+        hashed-command = "fg=#7aa2f7";
+      };
+    };
     historySubstringSearch.enable = true;
     history.expireDuplicatesFirst = true;
     shellAliases = {
